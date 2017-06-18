@@ -8,6 +8,28 @@ namespace Chess
 {
     class minimax
     {
+        public node findNextStatus(int[,] s, int depth, int anpha, int beta, int player)
+        {
+            Status st = new Status();
+            int value;
+            int max = -9999;
+            node n = st.createNode(s);
+            node next = new node();
+            st.getNextStatusPC(ref n.nextStatus, n.parentS);
+
+            foreach (node i in n.nextStatus)
+            {
+                value = AI(i, depth, anpha, beta, player);
+                if (max < value)
+                {
+                    max = value;
+                    next = i;
+                }
+
+            }
+            return next;
+        }
+
         public int AI(node n, int depth, int anpha, int beta, int player)
         {
             Status s = new Status();
@@ -22,6 +44,7 @@ namespace Chess
                     if (anpha >= beta)
                         break;
                 }
+                
                 return anpha;
             }
             else

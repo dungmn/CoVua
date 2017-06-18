@@ -91,9 +91,6 @@ namespace Chess
             p.change(ref n.parentS[0, 1], ref n.parentS[2, 2]);
             list.Add(n);
 
-            n = createNode(s);
-            p.change(ref n.parentS[0, 6], ref n.parentS[2, 7]);
-            list.Add(n);
         }
 
         public void getNextStatusPS(ref ArrayList list, int[,] s)
@@ -123,12 +120,12 @@ namespace Chess
             Random r = new Random();
             node n;
             n = createNode(s);
-            n.f = r.Next(1, 64);
+            n.f = r.Next(22, 44);
             p.change(ref n.parentS[6, 3], ref n.parentS[5, 3]);
             list.Add(n);
 
             n = createNode(s);
-            n.f = r.Next(1, 64);
+            n.f = r.Next(1,20);
             p.change(ref n.parentS[7, 1], ref n.parentS[5, 2]);
             list.Add(n);
         }

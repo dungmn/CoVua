@@ -20,13 +20,13 @@ namespace Chess
             int depth = 2;
             int anpha = -99999;
             int beta = 99999;
-            int player = 1;
-            int a;
+            int player = 0;
+
             Status s = new Status();
-            s.initS0(S0);
-            node n = s.createNode(S0);
             minimax mini = new minimax();
-            a = mini.AI(n, depth, anpha, beta, player);
+            node n = new node();
+            s.initS0(S0);
+            n = mini.findNextStatus(S0, depth, anpha, beta, player);
         }
 
     }
