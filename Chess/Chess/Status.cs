@@ -7,6 +7,7 @@ using System.Collections;
 
 namespace Chess
 {
+    //Tạo node lưu trữ trạng thái, giá trị heuristic và list các trạng thái kế tiếp
     struct node
     {
         public int[,] parentS;
@@ -16,18 +17,20 @@ namespace Chess
 
     class Status
     {
+        //Khởi tạo giá trị trạng thái ban đầu
         public void initS0(int[,] s)
         {
-            int[] arr = { 50, 30, 30, 90, 900, 30, 30, 50 };
-            for (int i = 0; i < 8; i++)
-            {
-                s[7, i] = arr[i]*(-1);
-                s[0, i] = arr[i];
-                s[1, i] = 10;
+            int[] arr = { 50, 30, 30, 90, 900, 30, 30, 50 }; //điểm của quân cờ rook(xe) = 50
+            for (int i = 0; i < 8; i++)                      //                 knight(mã) = 30
+            {                                                //                 bishop(tượng) = 30
+                s[7, i] = arr[i]*(-1);                       //                 queen(hậu) = 90
+                s[0, i] = arr[i];                            //                 King(vua) = 900
+                s[1, i] = 10;                                //                 pawn(chốt) = 10
                 s[6, i] = -10;
             }
         }
 
+        //Hàm copy trạng thái
         public void copy(ref int[,] d, int[,] s)
         {
             for (int i = 0; i < 8; i++)
@@ -39,6 +42,7 @@ namespace Chess
             }
         }
 
+        //Hàm khởi tạo giá trị cho node
         public node createNode(int[,] s)
         {
             node n = new node();
@@ -50,6 +54,7 @@ namespace Chess
             return n;
         }
 
+        //Xuất trạng thái (console)
         public void output(int[,] s)
         {
             for (int i = 0; i < 8; i++)
@@ -62,6 +67,7 @@ namespace Chess
             }
         }
 
+        //Hàm tính giá trị heuristic 
         public int getHeuristic(int[,] s)
         {
             int f = 0;
@@ -75,6 +81,7 @@ namespace Chess
             return f;
         }
 
+        //Tìm các trạng thái tiếp theo cho máy (MAX) ps: đang là demo
         public void getNextStatusPC(ref ArrayList list, int[,] s)
         {
             Program p = new Program();
@@ -93,6 +100,7 @@ namespace Chess
 
         }
 
+        //Tìm các trạng thái tiếp theo cho người chơi (MIN) ps: tạo để thử, chứ ko xài :))
         public void getNextStatusPS(ref ArrayList list, int[,] s)
         {
             Program p = new Program();
@@ -114,6 +122,7 @@ namespace Chess
             list.Add(n);
         }
 
+        //Tìm các trạng thái tiếp theo, gán giá trị heuristic ngẫu nhiên(để test AI)
         public void getRandomF(ref ArrayList list, int[,] s)
         {
             Program p = new Program();
