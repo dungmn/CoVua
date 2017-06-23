@@ -26,25 +26,35 @@ public class Pawn : Chess
 
     private void beSelectedWhite()
     {
-        Debug.Log(position.x + "," + position.y);
         if (!isMoved)
         {
             //có khả năng đi 2 bước
-            ChessBroard.Current._cell[position.x, position.y + 2].state = 1;
+            listTarget.Add(ChessBroard.Current._cell[position.x, position.y + 2]);
         }
 
         //có khả năng đi 1 bước
-        ChessBroard.Current._cell[position.x, position.y + 1].state = 1;
+        listTarget.Add(ChessBroard.Current._cell[position.x, position.y + 1]);
+
         //xác định ô chéo để ăn
         if (position.x < 7 && ChessBroard.Current._cell[position.x + 1, position.y + 1].currentChess != null)
-            ChessBroard.Current._cell[position.x + 1, position.y + 1].state = 1;
+        {
+            listTarget.Add(ChessBroard.Current._cell[position.x + 1, position.y + 1]);
+        }
         if (position.x > 0 && ChessBroard.Current._cell[position.x - 1, position.y + 1].currentChess != null)
-            ChessBroard.Current._cell[position.x - 1, position.y + 1].state = 1;
+        {
+            listTarget.Add(ChessBroard.Current._cell[position.x - 1, position.y + 1]);
+        }
 
+        foreach (var item in listTarget)
+        {
+            item.state = 2;
+        }
     }
 
-    public override void move()
+    public override void move(float x, float y)
     {
-        throw new NotImplementedException();
+        transform.position = new Vector3(x, y, 0);
+        setPosition(Convert.ToInt32(x),Convert.ToInt32(y));
+        isMoved = true;
     }
 }

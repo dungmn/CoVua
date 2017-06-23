@@ -7,8 +7,8 @@ public class cell : MonoBehaviour
 {
 
     public bool color; //0: white, 1: black
-    public int state; //0: normal, 1: Hover, 2: selected, 3: targeted
-    private int ChessPresent;
+    public int state; //0: normal, 1: selected, 2: targeted
+    public bool flagSelected = false;
     public Chess currentChess;
     private Material blackMaterial;
     private Material whiteMaterial;
@@ -23,7 +23,7 @@ public class cell : MonoBehaviour
 
     void Update()
     {
-       changestateCell();
+        changestateCell();
     }
     public void changestateCell()
     {
@@ -32,14 +32,16 @@ public class cell : MonoBehaviour
         selectedMaterial = Resources.Load<Material>("ColorCell/selected");
         switch (state)
         {
-            case 1: //hover
-                my_renderer.material = hoverMaterial;
+            case 0:
+                changeCellColor();
                 break;
-            case 2: //selected
-                my_renderer.material = selectedMaterial;
+            case 1: //selected
+                if (flagSelected)
+                    my_renderer.material = selectedMaterial;
                 currentChess.beSelected();
                 break;
-            case 3:
+            case 2: //target
+                my_renderer.material = hoverMaterial;
                 break;
 
             default:
@@ -77,23 +79,45 @@ public class cell : MonoBehaviour
 
     public void OnMouseDown()
     {
-       // if (currentChess != null)
-            this.state = 2; //selected
-    }
+        if (currentChess == null && state == 0)
+            return;
 
-    public void OnMouseEnter()
-    {
-        this.state = 1; //hover
-    }
-
-    public void OnMouseExit()
-    {
-        if (this.state == 1)
+        if (state == 2)
         {
-            changeCellColor();
-            this.state = 0; //normal
+            currentChess = ChessBroard.currentCellBefore.currentChess;
+           
+            currentChess.move(transform.position.x, transform.position.y);
+            ChessBroard.currentCellBefore.state = 0;
+            foreach (var item in ChessBroard.currentCellBefore.currentChess.listTarget)
+            {
+                item.state = 0;
+            }
+            ChessBroard.currentCellBefore.currentChess = null;
+            ChessBroard.currentCellBefore = null;
+            currentChess.listTarget.Clear();
+            state = 0;
+        }
+        else
+        {
+            returnStateCellBefore(); //trả lại state cell trước đó 
+            state = 1; //selected
+            flagSelected = true;
         }
 
+    }
+
+    public void returnStateCellBefore()
+    {
+        if (ChessBroard.currentCellBefore)
+        {
+            ChessBroard.currentCellBefore.flagSelected = false;
+            ChessBroard.currentCellBefore.state = 0;
+            foreach (var item in ChessBroard.currentCellBefore.currentChess.listTarget)
+            {
+                item.state = 0;
+            }
+        }
+        ChessBroard.currentCellBefore = this;
     }
 
     internal void setCurrentChess(ref Rook p)

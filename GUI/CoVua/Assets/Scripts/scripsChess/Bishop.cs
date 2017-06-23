@@ -9,7 +9,7 @@ public class Bishop : Chess {
         throw new NotImplementedException();
     }
 
-    public override void move()
+    public override void move(float x, float y)
     {
         throw new NotImplementedException();
     }

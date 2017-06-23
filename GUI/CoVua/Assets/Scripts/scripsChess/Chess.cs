@@ -7,7 +7,8 @@ public abstract class Chess : MonoBehaviour
    // public Vector3 offsetPosition;
     public Point position { get; private set; }
     public ChessInfo info;
-   // public int nameChess; //1: pawn, 2:rook, 3:knight, 4: bishop, 5:queen, 6: king
+    // public int nameChess; //1: pawn, 2:rook, 3:knight, 4: bishop, 5:queen, 6: king
+    public List<cell> listTarget = new List<cell>();
     public bool color; //true: black, false: white
    // private bool isAlive = true; //true: live, false: died
 
@@ -24,7 +25,7 @@ public abstract class Chess : MonoBehaviour
         position = new Point(x, y);
 
     }
-    public abstract void move();
+    public abstract void move(float x, float y);
     public abstract void beSelected();
 
 }
