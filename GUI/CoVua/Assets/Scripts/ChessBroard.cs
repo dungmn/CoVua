@@ -8,7 +8,7 @@ public class ChessBroard : MonoBehaviour
     public static cell currentCellBefore; //lấy cell trước khi selected lần 2
     public GameObject CellPrefap;
     public cell[,] _cell;
-    private List<Chess> listChess;
+    private List<Chess> listChess;  //lưu quân cờ
     // Use this for initialization
     public void Start()
     {
@@ -18,6 +18,7 @@ public class ChessBroard : MonoBehaviour
 
     void Awake()
     {
+       
         Current = this;
     }
     // Update is called once per frame

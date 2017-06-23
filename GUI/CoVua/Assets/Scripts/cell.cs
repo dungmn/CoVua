@@ -85,7 +85,7 @@ public class cell : MonoBehaviour
         if (state == 2)
         {
             currentChess = ChessBroard.currentCellBefore.currentChess;
-           
+
             currentChess.move(transform.position.x, transform.position.y);
             ChessBroard.currentCellBefore.state = 0;
             foreach (var item in ChessBroard.currentCellBefore.currentChess.listTarget)
@@ -98,6 +98,7 @@ public class cell : MonoBehaviour
             state = 0;
         }
         else
+        if (currentChess.color == ControlGame.current.player)
         {
             returnStateCellBefore(); //trả lại state cell trước đó 
             state = 1; //selected

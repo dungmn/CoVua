@@ -47,6 +47,7 @@
   </ItemGroup>
   <ItemGroup>
      <Compile Include="Assets\Scripts\ChessBroard.cs" />
+     <Compile Include="Assets\Scripts\ControlGame.cs" />
      <Compile Include="Assets\Scripts\Point.cs" />
      <Compile Include="Assets\Scripts\cell.cs" />
      <Compile Include="Assets\Scripts\scripsChess\Bishop.cs" />
