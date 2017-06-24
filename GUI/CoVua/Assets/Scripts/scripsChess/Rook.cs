@@ -8,11 +8,19 @@ public class Rook : Chess
     // Use this for initialization
     public override void beSelected()
     {
-        throw new NotImplementedException();
+        listTarget.Clear();
+        //Di chuyển ngang
+        moveHorizontal();
+
+        //Di chuyển dọc
+        moveVertical();
+
+        //set cell state = target
+        foreach (var item in listTarget)
+        {
+            item.state = 2;
+        }
     }
 
-    public override void move(float x, float y)
-    {
-        throw new NotImplementedException();
-    }
+    
 }

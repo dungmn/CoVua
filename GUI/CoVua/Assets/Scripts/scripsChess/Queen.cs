@@ -7,11 +7,19 @@ public class Queen : Chess
 {
     public override void beSelected()
     {
-        throw new NotImplementedException();
-    }
-
-    public override void move(float x, float y)
-    {
-        throw new NotImplementedException();
+        //di chuyển trái
+        listTarget.Clear();
+        moveLeft();
+        //di chuyển phải
+        moveRight();
+        //di chuyển ngang
+        moveHorizontal();
+        //di chuyển dọc
+        moveVertical();
+        //set cell state = target
+        foreach (var item in listTarget)
+        {
+            item.state = 2;
+        }
     }
 }

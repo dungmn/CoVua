@@ -12,12 +12,15 @@ public class cell : MonoBehaviour
     public Chess currentChess;
     private Material blackMaterial;
     private Material whiteMaterial;
-    private Material hoverMaterial;
+    private Material targetMaterial;
     private Material selectedMaterial;
 
     MeshRenderer my_renderer;
     void Start()
     {
+        my_renderer = GetComponent<MeshRenderer>();
+        targetMaterial = Resources.Load<Material>("ColorCell/target");
+        selectedMaterial = Resources.Load<Material>("ColorCell/selected");
         changeCellColor();
     }
 
@@ -25,11 +28,10 @@ public class cell : MonoBehaviour
     {
         changestateCell();
     }
+
     public void changestateCell()
     {
-        my_renderer = GetComponent<MeshRenderer>();
-        hoverMaterial = Resources.Load<Material>("ColorCell/hover");
-        selectedMaterial = Resources.Load<Material>("ColorCell/selected");
+
         switch (state)
         {
             case 0:
@@ -38,10 +40,9 @@ public class cell : MonoBehaviour
             case 1: //selected
                 if (flagSelected)
                     my_renderer.material = selectedMaterial;
-                currentChess.beSelected();
                 break;
             case 2: //target
-                my_renderer.material = hoverMaterial;
+                my_renderer.material = targetMaterial;
                 break;
 
             default:
@@ -79,29 +80,31 @@ public class cell : MonoBehaviour
 
     public void OnMouseDown()
     {
+
         if (currentChess == null && state == 0)
             return;
 
         if (state == 2)
         {
-            currentChess = ChessBroard.currentCellBefore.currentChess;
-
-            currentChess.move(transform.position.x, transform.position.y);
-            ChessBroard.currentCellBefore.state = 0;
-            foreach (var item in ChessBroard.currentCellBefore.currentChess.listTarget)
+            if (currentChess != null && currentChess.color != ControlGame.current.player)
             {
-                item.state = 0;
+                /*
+                    currentChess.isAlive = false;
+                    currentChess.transform.position = new Vector3(-1, -1, 0);
+                */
+                currentChess.destroyChess();
+                currentChess = null;
             }
-            ChessBroard.currentCellBefore.currentChess = null;
-            ChessBroard.currentCellBefore = null;
-            currentChess.listTarget.Clear();
-            state = 0;
+
+            if (currentChess == null)
+                doMoveAndChangeCellState();
         }
         else
-        if (currentChess.color == ControlGame.current.player)
+            if (currentChess.color == ControlGame.current.player)
         {
             returnStateCellBefore(); //trả lại state cell trước đó 
             state = 1; //selected
+            currentChess.beSelected();
             flagSelected = true;
         }
 
@@ -121,8 +124,18 @@ public class cell : MonoBehaviour
         ChessBroard.currentCellBefore = this;
     }
 
-    internal void setCurrentChess(ref Rook p)
+    public void doMoveAndChangeCellState()
     {
-        throw new NotImplementedException();
+        currentChess = ChessBroard.currentCellBefore.currentChess;
+        currentChess.move(transform.position.x, transform.position.y);
+        ChessBroard.currentCellBefore.state = 0;
+        foreach (var item in ChessBroard.currentCellBefore.currentChess.listTarget)
+        {
+            item.state = 0;
+        }
+        ChessBroard.currentCellBefore.currentChess = null;
+        ChessBroard.currentCellBefore = null;
+        currentChess.listTarget.Clear();
+        state = 0;
     }
 }

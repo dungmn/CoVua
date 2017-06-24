@@ -5,13 +5,40 @@ using UnityEngine;
 
 public class King : Chess
 {
+    List<Point> unitKing;
+    void Start()
+    {
+        unitKing = new List<Point>();
+        unitKing.Add(new Point(0,1));
+        unitKing.Add(new Point(1,0));
+        unitKing.Add(new Point(0,-1));
+        unitKing.Add(new Point(-1,0));
+        unitKing.Add(new Point(1,1));
+        unitKing.Add(new Point(-1,1));
+        unitKing.Add(new Point(1,-1));
+        unitKing.Add(new Point(-1,-1));
+    }
     public override void beSelected()
     {
-        throw new NotImplementedException();
-    }
+        listTarget.Clear();
+        int i = position.x;
+        int j = position.y;
 
-    public override void move(float x, float y)
-    {
-        throw new NotImplementedException();
+        foreach (var item in unitKing)
+        {
+            if (isCellPosition(i + item.x, j + item.y))
+                if (ChessBroard.Current._cell[i + item.x, j + item.y].currentChess != null)
+                {
+                    if (ChessBroard.Current._cell[i + item.x, j + item.y].currentChess.color != ControlGame.current.player)
+                        listTarget.Add(ChessBroard.Current._cell[i + item.x, j + item.y]);
+                }
+                else
+                    listTarget.Add(ChessBroard.Current._cell[i + item.x, j + item.y]);
+        }
+
+        foreach (var item in listTarget)
+        {
+            item.state = 2;
+        }
     }
 }
