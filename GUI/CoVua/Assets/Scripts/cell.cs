@@ -75,12 +75,12 @@ public class cell : MonoBehaviour
 
     public void setCurrentChess(Chess c)
     {
-        this.currentChess = c;
+        this.currentChess = c; //set cell hiện tại = chess c;
+        c.currentCell = this; // set current cell của Chess c = cell hiện tại
     }
 
     public void OnMouseDown()
     {
-
         if (currentChess == null && state == 0)
             return;
 
@@ -92,6 +92,13 @@ public class cell : MonoBehaviour
                     currentChess.isAlive = false;
                     currentChess.transform.position = new Vector3(-1, -1, 0);
                 */
+
+                if (currentChess.info.name == "b_king")
+                    ControlGame.current.isEndGame(false);
+                else
+                    if (currentChess.info.name == "w_king")
+                    ControlGame.current.isEndGame(true);
+
                 currentChess.destroyChess();
                 currentChess = null;
             }
@@ -101,12 +108,12 @@ public class cell : MonoBehaviour
         }
         else
             if (currentChess.color == ControlGame.current.player)
-        {
-            returnStateCellBefore(); //trả lại state cell trước đó 
-            state = 1; //selected
-            currentChess.beSelected();
-            flagSelected = true;
-        }
+            {
+                returnStateCellBefore(); //trả lại state cell trước đó 
+                state = 1; //selected
+                currentChess.beSelected();
+                flagSelected = true;
+            }
 
     }
 
@@ -127,6 +134,7 @@ public class cell : MonoBehaviour
     public void doMoveAndChangeCellState()
     {
         currentChess = ChessBroard.currentCellBefore.currentChess;
+        currentChess.currentCell = this;
         currentChess.move(transform.position.x, transform.position.y);
         ChessBroard.currentCellBefore.state = 0;
         foreach (var item in ChessBroard.currentCellBefore.currentChess.listTarget)

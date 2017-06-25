@@ -7,6 +7,7 @@ public abstract class Chess : MonoBehaviour
 {
     // public Vector3 offsetPosition;
     public Point position;
+    public cell currentCell;
     public ChessInfo info;
     // public int nameChess; //1: pawn, 2:rook, 3:knight, 4: bishop, 5:queen, 6: king
     public List<cell> listTarget = new List<cell>();
@@ -29,6 +30,7 @@ public abstract class Chess : MonoBehaviour
 
     public void destroyChess()
     {
+        ChessBroard.Current.listChessBlack.Remove(this);
         Destroy(this.gameObject);
     }
     public virtual void move(float x, float y)
